@@ -1077,7 +1077,31 @@ def login_screen():
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("<div style='height: 40px'></div>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-bottom:40px;">
+        <!-- Badge 1 -->
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:16px; min-width:180px; text-align:center; box-shadow:0 2px 4px rgba(0,0,0,0.02);">
+            <div style="font-size:1.5rem; font-weight:800; color:#10B981; line-height:1;">&lt; 60 sec</div>
+            <div style="font-size:0.75rem; font-weight:700; color:#64748B; text-transform:uppercase; margin-top:8px; letter-spacing:0.5px;">Scoring time</div>
+        </div>
+        <!-- Badge 2 -->
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:16px; min-width:180px; text-align:center; box-shadow:0 2px 4px rgba(0,0,0,0.02);">
+            <div style="font-size:1.5rem; font-weight:800; color:#3B82F6; line-height:1;">8+</div>
+            <div style="font-size:0.75rem; font-weight:700; color:#64748B; text-transform:uppercase; margin-top:8px; letter-spacing:0.5px;">Alternate data signals</div>
+        </div>
+        <!-- Badge 3 -->
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:16px; min-width:180px; text-align:center; box-shadow:0 2px 4px rgba(0,0,0,0.02);">
+            <div style="font-size:1.5rem; font-weight:800; color:#8B5CF6; line-height:1;">0%</div>
+            <div style="font-size:0.75rem; font-weight:700; color:#64748B; text-transform:uppercase; margin-top:8px; letter-spacing:0.5px;">Collateral required<br><span style="font-size:0.65rem;">(NTC segment)</span></div>
+        </div>
+        <!-- Badge 4 -->
+        <div style="background:#FEF2F2; border:1px solid #FECACA; border-radius:12px; padding:16px; min-width:180px; text-align:center; box-shadow:0 2px 4px rgba(0,0,0,0.02);">
+            <div style="font-size:1.5rem; font-weight:800; color:#EF4444; line-height:1;">₹30L Cr</div>
+            <div style="font-size:0.75rem; font-weight:700; color:#991B1B; text-transform:uppercase; margin-top:8px; letter-spacing:0.5px;">MSME credit gap</div>
+            <div style="font-size:0.65rem; color:#B91C1C; margin-top:4px;">(Market opportunity)</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     # ── Premium Portal Cards (Animated) ──
     c_lo, c_bo = st.columns(2, gap="large")
@@ -1787,7 +1811,7 @@ def lo_sidebar():
     st.sidebar.markdown('<div class="ss-sec" style="margin-top: 24px;">Applicant Search</div>', unsafe_allow_html=True)
     search_input = st.sidebar.text_input(
         "Search by GSTIN / Udyam / PAN / Mobile",
-        placeholder="e.g. 27AAPCS...",
+        placeholder="e.g. PAN, GST, CIN, Udyam",
         key="lo_search_input",
         label_visibility="collapsed"
     )
@@ -1798,7 +1822,7 @@ def lo_sidebar():
         elif len(search_input.strip()) >= 6:
             st.sidebar.caption("⚠️ Format not recognised. Try a GSTIN, Udyam, PAN or 10-digit mobile number.")
             
-    st.sidebar.markdown('<div class="ss-sec" style="margin-top: 16px;">Demo Portfolios</div>', unsafe_allow_html=True)
+    st.sidebar.markdown('<div class="ss-sec" style="margin-top: 16px;">Portfolio</div>', unsafe_allow_html=True)
     selected = st.sidebar.selectbox("Demo companies", ["— select —"] + list(COMPANIES.keys()),
                                      label_visibility="collapsed")
     st.sidebar.markdown("<hr style='margin: 32px 0 16px; border-color: #E2E8F0;'>", unsafe_allow_html=True)
@@ -2048,7 +2072,7 @@ def bo_sidebar(owner_name):
         st.rerun()
 
     companies = OWNER_PORTFOLIOS.get(owner_name, [])
-    st.sidebar.markdown('<div class="ss-sec" style="margin-top: 24px;">My Portfolio</div>', unsafe_allow_html=True)
+    st.sidebar.markdown('<div class="ss-sec" style="margin-top: 24px;">Portfolio</div>', unsafe_allow_html=True)
     for c in companies:
         active = st.session_state.get("bo_company") == c
         if st.sidebar.button(f"{'✅ ' if active else ''}{c}", key=f"co_{c}",
@@ -2560,7 +2584,7 @@ def lo_sidebar_v2():
     st.sidebar.markdown('<div class="ss-sec" style="margin-top: 24px;">Applicant Search</div>', unsafe_allow_html=True)
     search_input = st.sidebar.text_input(
         "Search by GSTIN / Udyam / PAN / Mobile", 
-        placeholder="e.g. 27AAPCS...", 
+        placeholder="e.g. PAN, GST, CIN, Udyam",
         key="lo_search_v2",
         label_visibility="collapsed"
     )
@@ -2575,7 +2599,7 @@ def lo_sidebar_v2():
     with st.sidebar.expander("ℹ️ Model Governance"):
         st.caption("ScoreStack AI outputs are recommendations requiring human sign-off. Scoring weights and thresholds are subject to periodic revalidation against actual portfolio default outcomes.")
     
-    st.sidebar.markdown('<div class="ss-sec" style="margin-top: 16px;">Demo Portfolios</div>', unsafe_allow_html=True)
+    st.sidebar.markdown('<div class="ss-sec" style="margin-top: 16px;">Portfolio</div>', unsafe_allow_html=True)
     lo_companies = [c for c, d in COMPANIES.items() if d.get("customer_type") == "active_applicant"]
     options = ["- select -"] + lo_companies
     
