@@ -1,0 +1,9 @@
+.env
+.streamlit/secrets.toml
+__pycache__/
+*.pyc
+.DS_Store
+fix_*.py
+update_*.py
+apply_*.py
+qa_audit.py
