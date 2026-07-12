@@ -2580,6 +2580,10 @@ def lo_sidebar_v2():
         force_scroll_to_top()
         st.session_state.screen = "lo_applications"
         st.rerun()
+    if st.sidebar.button("🔮 FutureLens Radar", use_container_width=True, type="primary" if st.session_state.get("screen") == "lo_portfolio" else "secondary"):
+        force_scroll_to_top()
+        st.session_state.screen = "lo_portfolio"
+        st.rerun()
     
     st.sidebar.markdown('<div class="ss-sec" style="margin-top: 24px;">Applicant Search</div>', unsafe_allow_html=True)
     search_input = st.sidebar.text_input(
@@ -3560,6 +3564,9 @@ def main():
         
     elif screen == "lo_applications":
         lo_applications_v2(model, explainer, features)
+        
+    elif screen == "lo_portfolio":
+        lo_portfolio_screen(model, explainer, features)
         
     elif screen == "lo_company":
         lo_company_v2(model, explainer, features, st.session_state.get("lo_company"))
