@@ -1809,10 +1809,12 @@ def lo_sidebar():
         st.rerun()
 
     st.sidebar.markdown('<div class="ss-sec" style="margin-top: 24px;">Applicant Search</div>', unsafe_allow_html=True)
+    if "search_v1_key_idx" not in st.session_state:
+        st.session_state.search_v1_key_idx = 0
     search_input = st.sidebar.text_input(
         "Search by GSTIN / Udyam / PAN / Mobile",
         placeholder="e.g. PAN, GST, CIN, Udyam",
-        key="lo_search_input",
+        key=f"lo_search_input_{st.session_state.search_v1_key_idx}",
         label_visibility="collapsed"
     )
     if search_input:
@@ -1831,8 +1833,8 @@ def lo_sidebar():
         
     if selected != st.session_state.prev_selected_v1:
         st.session_state.prev_selected_v1 = selected
-        if "lo_search_input" in st.session_state and st.session_state.lo_search_input:
-            st.session_state.lo_search_input = ""
+        if search_input and search_input.strip():
+            st.session_state.search_v1_key_idx += 1
             st.rerun()
     st.sidebar.markdown("<hr style='margin: 32px 0 16px; border-color: #E2E8F0;'>", unsafe_allow_html=True)
     if st.sidebar.button("🚪 Back to Main Menu", key="lo_logout", use_container_width=True):
@@ -2595,10 +2597,12 @@ def lo_sidebar_v2():
         st.rerun()
     
     st.sidebar.markdown('<div class="ss-sec" style="margin-top: 24px;">Applicant Search</div>', unsafe_allow_html=True)
+    if "search_v2_key_idx" not in st.session_state:
+        st.session_state.search_v2_key_idx = 0
     search_input = st.sidebar.text_input(
         "Search by GSTIN / Udyam / PAN / Mobile", 
         placeholder="e.g. PAN, GST, CIN, Udyam",
-        key="lo_search_v2",
+        key=f"lo_search_v2_{st.session_state.search_v2_key_idx}",
         label_visibility="collapsed"
     )
     if search_input:
@@ -2627,9 +2631,16 @@ def lo_sidebar_v2():
         
     if selected != st.session_state.prev_selected_v2:
         st.session_state.prev_selected_v2 = selected
-        if "lo_search_v2" in st.session_state and st.session_state.lo_search_v2:
-            st.session_state.lo_search_v2 = ""
-            st.rerun()
+        
+        if selected != "- select -" and st.session_state.get("lo_company") != selected:
+            st.session_state.lo_company = selected
+            st.session_state.screen = "lo_company"
+            
+        if search_input and search_input.strip():
+            st.session_state.search_v2_key_idx += 1
+            
+        force_scroll_to_top()
+        st.rerun()
     
     if search_input and search_input.strip():
         company_name, _ = lookup_by_identifier(search_input)
@@ -2643,12 +2654,6 @@ def lo_sidebar_v2():
                 st.rerun()
         else:
             st.sidebar.error("Not found in demo data.")
-    elif selected and selected != "- select -":
-        if st.session_state.get("lo_company") != selected:
-            st.session_state.lo_company = selected
-            st.session_state.screen = "lo_company"
-            force_scroll_to_top()
-            st.rerun()
             
     st.sidebar.markdown('<div style="margin-top: 50px;"></div>', unsafe_allow_html=True)
     if st.sidebar.button("🚪 Logout", use_container_width=True):
