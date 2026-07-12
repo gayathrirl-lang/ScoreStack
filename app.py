@@ -1823,8 +1823,13 @@ def lo_sidebar():
             st.sidebar.caption("⚠️ Format not recognised. Try a GSTIN, Udyam, PAN or 10-digit mobile number.")
             
     st.sidebar.markdown('<div class="ss-sec" style="margin-top: 16px;">Portfolio</div>', unsafe_allow_html=True)
+    
+    def clear_v1_search():
+        if "lo_search_input" in st.session_state:
+            st.session_state.lo_search_input = ""
+            
     selected = st.sidebar.selectbox("Demo companies", ["— select —"] + list(COMPANIES.keys()),
-                                     label_visibility="collapsed")
+                                     label_visibility="collapsed", key="lo_select_v1", on_change=clear_v1_search)
     st.sidebar.markdown("<hr style='margin: 32px 0 16px; border-color: #E2E8F0;'>", unsafe_allow_html=True)
     if st.sidebar.button("🚪 Back to Main Menu", key="lo_logout", use_container_width=True):
         for k in list(st.session_state.keys()): del st.session_state[k]
@@ -2611,7 +2616,11 @@ def lo_sidebar_v2():
     if st.session_state.get("lo_company") in lo_companies:
         current_index = options.index(st.session_state.get("lo_company"))
         
-    selected = st.sidebar.selectbox("Demo companies", options, index=current_index, label_visibility="collapsed")
+    def clear_v2_search():
+        if "lo_search_v2" in st.session_state:
+            st.session_state.lo_search_v2 = ""
+            
+    selected = st.sidebar.selectbox("Demo companies", options, index=current_index, label_visibility="collapsed", key="lo_select_v2", on_change=clear_v2_search)
     
     if search_input and search_input.strip():
         company_name, _ = lookup_by_identifier(search_input)
