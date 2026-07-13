@@ -2054,7 +2054,7 @@ def lo_portfolio_screen(model, explainer, features):
         with col_btn:
             if st.button("View full report", key=f"port_view_{cname}", use_container_width=True):
                 st.session_state.lo_company = cname
-                st.session_state.lo_view = "applications"
+                st.session_state.screen = "lo_company"
                 if "lo_score" in st.session_state: del st.session_state["lo_score"]
                 st.rerun()
         st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
